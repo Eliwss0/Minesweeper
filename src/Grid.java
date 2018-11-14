@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Grid {
-    int maxNumOfMines;
-    int sizeX,sizeY;
+    private int maxNumOfMines;
+    private int sizeX,sizeY;
     ArrayList<Cell> cells=new ArrayList<>();
 }
