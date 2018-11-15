@@ -3,16 +3,21 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Main {
 
-    public static void main(String[] args){
+public class Main extends JFrame {
+
+    public static void main(String[] args) {
+        visualGrid mine = new visualGrid(500, 500, 10, 10);
 
         JFrame appFrame = new JFrame();
-        appFrame.setSize(500, 500);
+        appFrame.setSize(500, 520);
         appFrame.setTitle("Minesweeper");
         appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         appFrame.setVisible(true);
 
+        appFrame.add(mine);
+        //appFrame.pack();
+        appFrame.setResizable(false);
     }
 
     public static void showWinLoseAlert(String message, String title) {
