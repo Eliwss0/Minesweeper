@@ -3,7 +3,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+//Should we use JavaFX?
 public class Main extends JFrame {
 
     public static void main(String[] args) {

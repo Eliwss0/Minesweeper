@@ -1,7 +1,7 @@
 import javax.swing.JFrame;
 import java.awt.Graphics;
 import javax.swing.JPanel;
-
+//Should we use JavaFX?
 public class visualGrid extends JPanel {
     int width, height;
 
