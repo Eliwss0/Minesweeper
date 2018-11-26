@@ -13,8 +13,27 @@ class Cell {
     }
     void setChecked(){
         isChecked=true;
+        if(hasMine) {
+            //Game over
+        }
     }
-    void checkForAdjMines(){
-        //check cell-1,cell+1,cell-sizeX-1,cell-sizeX,cell-sizeX+1,cell+sizeX-1,cell+sizeX,cell+sizeX+1
+    int checkForAdjMines(Cell[][] arr,int x,int y){
+        if(arr[y][x+1].hasMine)
+            numOfAdjMines++;
+        if(arr[y+1][x].hasMine)
+            numOfAdjMines++;
+        if(arr[y+1][x+1].hasMine)
+            numOfAdjMines++;
+        if(arr[y-1][x].hasMine)
+            numOfAdjMines++;
+        if(arr[y][x-1].hasMine)
+            numOfAdjMines++;
+        if(arr[y-1][x-1].hasMine)
+            numOfAdjMines++;
+        if(arr[y+1][x-1].hasMine)
+            numOfAdjMines++;
+        if(arr[y-1][x+1].hasMine)
+            numOfAdjMines++;
+        return numOfAdjMines;
     }
 }
