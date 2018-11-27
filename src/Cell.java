@@ -20,7 +20,7 @@ class Cell {
     void setChecked(){
         isChecked=true;
         if(hasMine) {
-            //Game over
+            //TODO: Game over
         }
     }
     int checkForAdjMines(Cell[][] arr,int x,int y){
