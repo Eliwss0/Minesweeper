@@ -9,9 +9,10 @@ public class Grid {
             randX=(int)(Math.random()*10);
             randY=(int)(Math.random()*10);
             i++;
+            cellsList[randY][randX].setMine();
         }
     }
-    int checkForAdjMines(Cell[][] arr,int x,int y){
+    void checkForAdjMines(Cell[][] arr, int x, int y){
         int numOfAdjMines=0;
         if(arr[y][x+1].getHasMine()) //check right
             numOfAdjMines++;
@@ -29,7 +30,7 @@ public class Grid {
             numOfAdjMines++;
         if(arr[y-1][x+1].getHasMine()) //check down-right
             numOfAdjMines++;
-        return numOfAdjMines;
+        cellsList[y][x].setNumOfAdjMines(numOfAdjMines);
     }
     void revealAdj(Cell[][] arr,int y,int x){
         //woo recursion

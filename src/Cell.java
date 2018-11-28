@@ -6,7 +6,7 @@ class Cell extends JPanel {
     private boolean hasMine;
     private boolean isFlagged;
     private boolean isChecked;
-    private int numOfAdjMines,x,y;
+    private int numOfAdjMines;
     Cell(){
         hasMine=false;
         isFlagged=false;
