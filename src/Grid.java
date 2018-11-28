@@ -5,12 +5,13 @@ public class Grid {
     Cell[][] cellsList=new Cell[sizeY][sizeX];
     Grid(int sX,int sY,int maxMines) {
         //Randomly place mines
-        int i=0;
         sizeX=sX;
         sizeY=sY;
         maxNumOfMines=maxMines;
+    }
+    void assignMines(){
+        int i=0;
         while(i<maxNumOfMines){
-            //TODO: Fix index out of bounds
             randX=(int)(Math.random()*sizeX);
             randY=(int)(Math.random()*sizeY);
             if(!cellsList[randY][randX].getHasMine()){

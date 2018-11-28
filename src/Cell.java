@@ -6,7 +6,7 @@ class Cell {
     Cell(){
         hasMine=false;
         isFlagged=false;
-        numOfAdjMines=-1;
+        numOfAdjMines=0;
     }
     boolean getHasMine(){
         return hasMine;
