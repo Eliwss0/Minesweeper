@@ -1,12 +1,31 @@
-class Cell {
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+class Cell extends JPanel {
     private boolean hasMine;
     private boolean isFlagged;
     private boolean isChecked;
-    private int numOfAdjMines;
+    private int numOfAdjMines, x, y;
     Cell(){
         hasMine=false;
         isFlagged=false;
         numOfAdjMines=0;
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // left click
+                    System.out.println("left button clicked");
+                }
+                else if (SwingUtilities.isRightMouseButton(e)) {
+                    // right click
+                    System.out.println("right button clicked");
+                }
+            }
+        });
     }
     boolean getHasMine(){
         return hasMine;
@@ -21,6 +40,7 @@ class Cell {
         isChecked=true;
         if(hasMine) {
             //TODO: Game over
+            Main.showWinLoseAlert("You have lost.", "Game Over");
         }
     }
     int checkForAdjMines(Cell[][] arr,int x,int y){
