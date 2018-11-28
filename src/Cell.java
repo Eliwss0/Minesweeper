@@ -18,14 +18,13 @@ class Cell extends JPanel {
                 super.mouseClicked(e);
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     // left click
-                    System.out.println("left button clicked");
                 }
                 else if (SwingUtilities.isRightMouseButton(e)) {
                     // right click
-                    System.out.println("right button clicked");
                 }
             }
-        });
+        }
+        );
     }
     boolean getHasMine(){
         return hasMine;

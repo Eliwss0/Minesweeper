@@ -1,23 +1,18 @@
 public class Grid {
-    //maxNumOfMines, sizeX, and sizeY should be provided by user before beginning the game
-    private int maxNumOfMines;
-    private int sizeX,sizeY,randX,randY;
-    Cell[][] cellsList=new Cell[sizeY][sizeX];
-    Grid(int sX,int sY,int maxMines) {
-        //Randomly place mines
-        sizeX=sX;
-        sizeY=sY;
-        maxNumOfMines=maxMines;
-    }
+    private int randX,randY;
+    Cell[][] cellsList=new Cell[10][10];
+    Grid(){}
     void assignMines(){
+        //Max 15 mines
         int i=0;
-        while(i<maxNumOfMines){
-            randX=(int)(Math.random()*sizeX);
-            randY=(int)(Math.random()*sizeY);
-            if(!cellsList[randY][randX].getHasMine()){
-                cellsList[randY][randX].setMine();
-                i++;
-            }
+        while(i<15){
+            randX=(int)(Math.random()*10);
+            randY=(int)(Math.random()*10);
+            //not working check to see if mine is already there
+//            if(!cellsList[randY][randX].getHasMine()){
+//                cellsList[randY][randX].setMine();
+//                i++;
+//            }
         }
     }
 }
