@@ -38,9 +38,6 @@ class Cell extends JPanel {
     }
     void setChecked(){
         isChecked=true;
-        if(hasMine) {
-            Main.showWinLoseAlert("You have lost.", "Game Over");
-        }
     }
     void setNumOfAdjMines(int numMines){
         numOfAdjMines=numMines;

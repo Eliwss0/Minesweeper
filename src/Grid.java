@@ -2,6 +2,15 @@ public class Grid {
     private int randX,randY;
     Cell[][] cellsList=new Cell[10][10];
     Grid(){}
+    void checkCell(Cell[][] cl,int y,int x){
+        if(cl[y][x].getHasMine())
+            Main.showWinLoseAlert("You have lost.", "Game Over");
+        if(cl[y][x].getNumOfAdjMines()==0){
+            revealAdj(cl,y,x);
+        }
+        //set image on cell to number of adj mines here
+        cl[y][x].setChecked();
+    }
     void initializeCells(){
         for(int i=0;i<10;i++){
             for (int j=0;j<10;j++){
@@ -15,48 +24,48 @@ public class Grid {
         while(i<15){
             randX=(int)(Math.random()*10);
             randY=(int)(Math.random()*10);
-            i++;
-            //nullpointer should be fixed when cells are initialized
             cellsList[randY][randX].setMine();
+            i++;
         }
     }
     void checkForAdjMines(Cell[][] arr, int x, int y){
         int numOfAdjMines=0;
-        if(arr[y][x+1].getHasMine()) //check right
+        if(arr[y][x+1].getHasMine()&&x<10) //check right
             numOfAdjMines++;
-        if(arr[y+1][x].getHasMine()) //check up
+        if(arr[y+1][x].getHasMine()&&y<10) //check up
             numOfAdjMines++;
-        if(arr[y+1][x+1].getHasMine()) //check up-right
+        if(arr[y+1][x+1].getHasMine()&&x<10&&y<10) //check up-right
             numOfAdjMines++;
-        if(arr[y-1][x].getHasMine()) //check down
+        if(arr[y-1][x].getHasMine()&&y>0) //check down
             numOfAdjMines++;
-        if(arr[y][x-1].getHasMine()) //check left
+        if(arr[y][x-1].getHasMine()&&x>0) //check left
             numOfAdjMines++;
-        if(arr[y-1][x-1].getHasMine()) //check down-left
+        if(arr[y-1][x-1].getHasMine()&&y>0&&x>0) //check down-left
             numOfAdjMines++;
-        if(arr[y+1][x-1].getHasMine()) //check up-left
+        if(arr[y+1][x-1].getHasMine()&&y<10&&x>0) //check up-left
             numOfAdjMines++;
-        if(arr[y-1][x+1].getHasMine()) //check down-right
+        if(arr[y-1][x+1].getHasMine()&&y>0&&x<10) //check down-right
             numOfAdjMines++;
         cellsList[y][x].setNumOfAdjMines(numOfAdjMines);
+        //if empty w/ no adj mines, start revealAdj
     }
     void revealAdj(Cell[][] arr,int y,int x){
         //woo recursion
-        if (arr[y][x + 1].getNumOfAdjMines() == 0) //check right
+        if (arr[y][x + 1].getNumOfAdjMines() == 0&&x<10) //check right
             revealAdj(cellsList,y,x+1);
-        if (arr[y + 1][x].getNumOfAdjMines() == 0) //check up
+        if (arr[y + 1][x].getNumOfAdjMines() == 0&&y<10) //check up
             revealAdj(cellsList,y+1,x);
-        if (arr[y + 1][x + 1].getNumOfAdjMines() == 0) //check up-right
+        if (arr[y + 1][x + 1].getNumOfAdjMines() == 0&&y<10&&x<10) //check up-right
             revealAdj(cellsList,y+1,x+1);
-        if (arr[y - 1][x].getNumOfAdjMines() == 0) //check down
+        if (arr[y - 1][x].getNumOfAdjMines() == 0&&y>0) //check down
             revealAdj(cellsList,y-1,x);
-        if (arr[y][x - 1].getNumOfAdjMines() == 0) //check left
+        if (arr[y][x - 1].getNumOfAdjMines() == 0&&x>0) //check left
             revealAdj(cellsList,y,x-1);
-        if (arr[y - 1][x - 1].getNumOfAdjMines() == 0) //check down-left
+        if (arr[y - 1][x - 1].getNumOfAdjMines() == 0&&y>0&&x>0) //check down-left
             revealAdj(cellsList,y-1,x-1);
-        if (arr[y + 1][x - 1].getNumOfAdjMines() == 0) //check up-left
+        if (arr[y + 1][x - 1].getNumOfAdjMines() == 0&&y<10&&x>0) //check up-left
             revealAdj(cellsList,y+1,x-1);
-        if (arr[y - 1][x + 1].getNumOfAdjMines() == 0) //check down-right
+        if (arr[y - 1][x + 1].getNumOfAdjMines() == 0&&y>0&&x<10) //check down-right
             revealAdj(cellsList,y-1,x+1);
     }
 }
