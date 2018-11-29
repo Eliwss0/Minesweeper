@@ -58,6 +58,7 @@ public class Main extends JFrame {
         //appFrame.pack();
         appFrame.setResizable(false);
         Grid grid=new Grid();
+        grid.initializeCells();
         grid.assignMines();
         mine.setLayout(new GridLayout(10,10));
         for (int x = 0; x < 10; x++) {
