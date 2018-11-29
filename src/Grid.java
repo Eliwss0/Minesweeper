@@ -2,6 +2,13 @@ public class Grid {
     private int randX,randY;
     Cell[][] cellsList=new Cell[10][10];
     Grid(){}
+    void initializeCells(){
+        for(int i=0;i<10;i++){
+            for (int j=0;j<10;j++){
+                cellsList[i][j]=new Cell();
+            }
+        }
+    }
     void assignMines(){
         //Max 15 mines
         int i=0;
@@ -9,6 +16,7 @@ public class Grid {
             randX=(int)(Math.random()*10);
             randY=(int)(Math.random()*10);
             i++;
+            //nullpointer should be fixed when cells are initialized
             cellsList[randY][randX].setMine();
         }
     }
