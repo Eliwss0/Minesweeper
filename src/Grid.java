@@ -54,10 +54,10 @@ public class Grid extends JPanel {
             for (int y = 0; y < 10; y++) {
 //                g.drawString("M", (y * 50) + 25, (x * 50) + 25);
                 if (cellsList[x][y].getFlagged()) {
-                    g.drawString("F", (x * 50) + 25, (y * 50) + 25);
+                    g.drawString("S", (x * 50) + 25, (y * 50) + 25);
                 }
                 else if (cellsList[x][y].getMinePressed()) {
-                    g.drawString("M", (x * 50) + 25, (y * 50) + 25);
+                    g.drawString("☼", (x * 50) + 25, (y * 50) + 25);
                 }
                 else {
                     int mines = cellsList[x][y].getNumOfAdjMines();
@@ -66,6 +66,28 @@ public class Grid extends JPanel {
                     }
                 }
             }
+        }
+    }
+
+    boolean gameIsWon(Cell[][] cells) {
+        int unmarkedMines = 0;
+        int uncheckedCells = 0;
+
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 10; y++) {
+                if (!cellsList[x][y].getFlagged() && cellsList[x][y].getHasMine()) {
+                    unmarkedMines++;
+                }
+                if (!cellsList[x][y].getChecked() && !cellsList[x][y].getHasMine()) {
+                    uncheckedCells++;
+                }
+            }
+        }
+        if (unmarkedMines > 0 || uncheckedCells > 0) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 
@@ -94,19 +116,24 @@ public class Grid extends JPanel {
 
         int mines = 0;
 
+        int top = y - 1;
+        int bottom = y + 1;
+        int left = x - 1;
+        int right = x + 1;
+
         boolean leftMines = (x != 0) && cells[x - 1][y].getHasMine();
         if (leftMines) {
             mines++;
         }
-        boolean topLeftMines = (x != 0 && y != 0) && cells[x - 1][y + 1].getHasMine();
+        boolean topLeftMines = (x != 0 && y != 0) && cells[x - 1][y - 1].getHasMine();
         if (topLeftMines) {
             mines++;
         }
-        boolean topMines = (y != 0) && cells[x][y + 1].getHasMine();
+        boolean topMines = (y != 0) && cells[x][y - 1].getHasMine();
         if (topMines) {
             mines++;
         }
-        boolean topRightMines = (x != 9 && y != 0) && cells[x + 1][y + 1].getHasMine();
+        boolean topRightMines = (x != 9 && y != 0) && cells[x + 1][y - 1].getHasMine();
         if (topRightMines) {
             mines++;
         }
@@ -130,13 +157,54 @@ public class Grid extends JPanel {
         if (mines == 0) {
             //TODO: reveal mines
             System.out.println("revealing empty cells...");
-//            revealTouchingMines(cells, x, y);
+            revealTouchingMines(cells, x, y);
 //            revealAdj(cells, x, y);
-
             repaint();
         }
 
         cellsList[x][y].setNumOfAdjMines(mines);
+    }
+
+    void revealTouchingMines(Cell[][] cells, int x, int y) {
+
+        int top = y - 1;
+        int bottom = y + 1;
+        int left = x - 1;
+        int right = x + 1;
+
+        boolean leftMines = (x != 0) && cells[x - 1][y].getHasMine();
+        if (!leftMines) {
+            revealTouchingMines(cells, left, y);
+        }
+        boolean topLeftMines = (x != 0 && y != 0) && cells[x - 1][y - 1].getHasMine();
+        if (!topLeftMines) {
+            revealTouchingMines(cells, left, top);
+        }
+        boolean topMines = (y != 0) && cells[x][y - 1].getHasMine();
+        if (!topMines) {
+            revealTouchingMines(cells, x, top);
+        }
+        boolean topRightMines = (x != 9 && y != 0) && cells[x + 1][y - 1].getHasMine();
+        if (!topRightMines) {
+            revealTouchingMines(cells, right, top);
+        }
+        boolean rightMines = (x != 9) && cells[x + 1][y].getHasMine();
+        if (!rightMines) {
+            revealTouchingMines(cells, right, y);
+        }
+        boolean bottomRightMines = (x != 9 && y != 9) && cells[x + 1][y + 1].getHasMine();
+        if (!bottomRightMines) {
+            revealTouchingMines(cells, right, bottom);
+        }
+        boolean bottomMines = (y != 9) && cells[x][y + 1].getHasMine();
+        if (!bottomMines) {
+            revealTouchingMines(cells, x, bottom);
+        }
+        boolean bottomLeftMines = (x != 0 && y != 10) && cells[x - 1][y + 1].getHasMine();
+        if (!bottomLeftMines) {
+            revealTouchingMines(cells, left, bottom);
+        }
+
     }
 
     void checkForAdjMines(Cell[][] arr, int x, int y){
@@ -171,22 +239,22 @@ public class Grid extends JPanel {
 
     void revealAdj(Cell[][] arr,int y,int x){
         //woo recursion
-        if (arr[y][x + 1].getNumOfAdjMines() == 0&&x<10) //check right
-            revealAdj(cellsList,y,x+1);
-        if (arr[y + 1][x].getNumOfAdjMines() == 0&&y<10) //check up
-            revealAdj(cellsList,y+1,x);
-        if (arr[y + 1][x + 1].getNumOfAdjMines() == 0&&y<10&&x<10) //check up-right
-            revealAdj(cellsList,y+1,x+1);
-        if (arr[y - 1][x].getNumOfAdjMines() == 0&&y>0) //check down
-            revealAdj(cellsList,y-1,x);
-        if (arr[y][x - 1].getNumOfAdjMines() == 0&&x>0) //check left
-            revealAdj(cellsList,y,x-1);
-        if (arr[y - 1][x - 1].getNumOfAdjMines() == 0&&y>0&&x>0) //check down-left
-            revealAdj(cellsList,y-1,x-1);
-        if (arr[y + 1][x - 1].getNumOfAdjMines() == 0&&y<10&&x>0) //check up-left
-            revealAdj(cellsList,y+1,x-1);
-        if (arr[y - 1][x + 1].getNumOfAdjMines() == 0&&y>0&&x<10) //check down-right
-            revealAdj(cellsList,y-1,x+1);
+        if (arr[y][x + 1].getNumOfAdjMines() == 0 && x < 10) //check right
+            revealAdj(cellsList, y,x + 1);
+        if (arr[y + 1][x].getNumOfAdjMines() == 0 && y < 10) //check up
+            revealAdj(cellsList,y + 1, x);
+        if (arr[y + 1][x + 1].getNumOfAdjMines() == 0 && y < 10 && x < 10) //check up-right
+            revealAdj(cellsList,y + 1,x + 1);
+        if (arr[y - 1][x].getNumOfAdjMines() == 0 && y > 0) //check down
+            revealAdj(cellsList,y - 1, x);
+        if (arr[y][x - 1].getNumOfAdjMines() == 0 && x > 0) //check left
+            revealAdj(cellsList, y,x - 1);
+        if (arr[y - 1][x - 1].getNumOfAdjMines() == 0 && y > 0 && x > 0) //check down-left
+            revealAdj(cellsList,y - 1,x - 1);
+        if (arr[y + 1][x - 1].getNumOfAdjMines() == 0 && y < 10 && x > 0) //check up-left
+            revealAdj(cellsList,y + 1,x - 1);
+        if (arr[y - 1][x + 1].getNumOfAdjMines() == 0 && y > 0 && x < 10) //check down-right
+            revealAdj(cellsList,y - 1,x + 1);
     }
 
     private class MineClicker extends MouseAdapter {
@@ -218,6 +286,7 @@ public class Grid extends JPanel {
                         //TODO: clean game and start over
                     }
                     else {
+                        cellsList[cellX][cellY].setChecked();
                         checkForTouchingMines(cellsList, cellY, cellX);
 //                        checkForAdjMines(cellsList, col, row);
                     }
@@ -225,6 +294,9 @@ public class Grid extends JPanel {
 //                    revalidate();
                     repaint();
                 }
+            }
+            if (gameIsWon(cellsList)) {
+                Main.showWinLoseAlert("You have won.", "Game Over");
             }
         }
     }

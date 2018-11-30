@@ -13,6 +13,7 @@ class Cell extends JPanel {
     Cell() {
         hasMine = false;
         isFlagged = false;
+        isChecked = false;
         numOfAdjMines = 0;
     }
 
@@ -42,6 +43,10 @@ class Cell extends JPanel {
 
     void setChecked() {
         isChecked = true;
+    }
+
+    boolean getChecked() {
+        return isChecked;
     }
 
     void setNumOfAdjMines(int numMines) {
