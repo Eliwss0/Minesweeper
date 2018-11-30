@@ -40,6 +40,8 @@ public class Grid extends JPanel {
         width = getSize().width;
         height = getSize().height;
 
+//        g.drawRect(0, 0, 500, 500);
+
         // draw the rows
         int rowHt = height / (rows);
         for (i = 0; i < rows; i++)
