@@ -46,7 +46,7 @@ public class Main extends JFrame {
 //        gameParameters.setVisible(true);
 
         //images are 17x17, maybe scale grid by number of cells?
-        visualGrid mine = new visualGrid(500, 500, 10, 10);
+        Grid mine = new Grid(500, 500, 10, 10);
 
         JFrame appFrame = new JFrame();
         appFrame.setSize(500, 520);
@@ -57,15 +57,15 @@ public class Main extends JFrame {
         appFrame.add(mine);
         //appFrame.pack();
         appFrame.setResizable(false);
-        Grid grid=new Grid();
-        grid.initializeCells();
-        grid.assignMines();
+//        Grid grid=new Grid();
+//        mine.initializeCells();
+//        mine.assignMines();
         mine.setLayout(new GridLayout(10,10));
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 10; y++) {
-                mine.add(grid.cellsList[x][y]);
-            }
-        }
+//        for (int x = 0; x < 10; x++) {
+//            for (int y = 0; y < 10; y++) {
+//                mine.add(grid.cellsList[x][y]);
+//            }
+//        }
     }
 
     public static void showWinLoseAlert(String message, String title) {
