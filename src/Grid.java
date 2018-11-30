@@ -56,9 +56,9 @@ public class Grid extends JPanel {
                 if (cellsList[x][y].getFlagged()) {
                     g.drawString("F", (x * 50) + 25, (y * 50) + 25);
                 }
-//                else if (cellsList[x][y].getHasMine()) {
-//                    g.drawString("M", (x * 50) + 25, (y * 50) + 25);
-//                }
+                else if (cellsList[x][y].getMinePressed()) {
+                    g.drawString("M", (x * 50) + 25, (y * 50) + 25);
+                }
                 else {
                     int mines = cellsList[x][y].getNumOfAdjMines();
                     if (mines != 0) {
@@ -88,26 +88,77 @@ public class Grid extends JPanel {
         }
     }
 
+    void checkForTouchingMines(Cell[][] cells, int x, int y) {
+
+        System.out.println("checking " + String.valueOf(x) + "," + String.valueOf(y));
+
+        int mines = 0;
+
+        boolean leftMines = (x != 0) && cells[x - 1][y].getHasMine();
+        if (leftMines) {
+            mines++;
+        }
+        boolean topLeftMines = (x != 0 && y != 0) && cells[x - 1][y + 1].getHasMine();
+        if (topLeftMines) {
+            mines++;
+        }
+        boolean topMines = (y != 0) && cells[x][y + 1].getHasMine();
+        if (topMines) {
+            mines++;
+        }
+        boolean topRightMines = (x != 9 && y != 0) && cells[x + 1][y + 1].getHasMine();
+        if (topRightMines) {
+            mines++;
+        }
+        boolean rightMines = (x != 9) && cells[x + 1][y].getHasMine();
+        if (rightMines) {
+            mines++;
+        }
+        boolean bottomRightMines = (x != 9 && y != 9) && cells[x + 1][y + 1].getHasMine();
+        if (bottomRightMines) {
+            mines++;
+        }
+        boolean bottomMines = (y != 9) && cells[x][y + 1].getHasMine();
+        if (bottomMines) {
+            mines++;
+        }
+        boolean bottomLeftMines = (x != 0 && y != 10) && cells[x - 1][y + 1].getHasMine();
+        if (bottomLeftMines) {
+            mines++;
+        }
+
+        if (mines == 0) {
+            //TODO: reveal mines
+            System.out.println("revealing empty cells...");
+//            revealTouchingMines(cells, x, y);
+//            revealAdj(cells, x, y);
+
+            repaint();
+        }
+
+        cellsList[x][y].setNumOfAdjMines(mines);
+    }
+
     void checkForAdjMines(Cell[][] arr, int x, int y){
 
         System.out.println("checking " + String.valueOf(x) + "," + String.valueOf(y));
 
         int numOfAdjMines=0;
-        if(arr[y][x+1].getHasMine()&&x<10) //check right
+        if(arr[y][x+1].getHasMine() && x < 10) //check right
             numOfAdjMines++;
-        if(arr[y+1][x].getHasMine()&&y<10) //check up
+        if(arr[y+1][x].getHasMine() && y < 10) //check up
             numOfAdjMines++;
-        if(arr[y+1][x+1].getHasMine()&&x<10&&y<10) //check up-right
+        if(arr[y+1][x+1].getHasMine() && x<10 && y < 10) //check up-right
             numOfAdjMines++;
-        if(arr[y-1][x].getHasMine()&&y>0) //check down
+        if(arr[y-1][x].getHasMine() && y > 0) //check down
             numOfAdjMines++;
-        if(arr[y][x-1].getHasMine()&&x>0) //check left
+        if(arr[y][x-1].getHasMine() && x > 0) //check left
             numOfAdjMines++;
-        if(arr[y-1][x-1].getHasMine()&&y>0&&x>0) //check down-left
+        if(arr[y-1][x-1].getHasMine() && y > 0 && x > 0) //check down-left
             numOfAdjMines++;
-        if(arr[y+1][x-1].getHasMine()&&y<10&&x>0) //check up-left
+        if(arr[y+1][x-1].getHasMine() && y < 10 && x > 0) //check up-left
             numOfAdjMines++;
-        if(arr[y-1][x+1].getHasMine()&&y>0&&x<10) //check down-right
+        if(arr[y-1][x+1].getHasMine() && y > 0 && x < 10) //check down-right
             numOfAdjMines++;
 
         if (numOfAdjMines == 0) {
@@ -141,34 +192,34 @@ public class Grid extends JPanel {
     private class MineClicker extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent event) {
-            int x = event.getX();
-            int y = event.getY();
-            int col = x / 50;
-            int row = y /50;
+            int mouseX = event.getX();
+            int mouseY = event.getY();
+            int cellX = mouseX / 50;
+            int cellY = mouseY /50;
 
-            if (x < 500 && y < 500) {
+            if (mouseX < 500 && mouseY < 500) {
                 System.out.print("pressed mouse at ");
-                System.out.print(x);
+                System.out.print(cellX);
                 System.out.print(",");
-                System.out.print(y);
-                System.out.print(" ");
-                System.out.print(col);
-                System.out.print(",");
-                System.out.println(row);
+                System.out.println(cellY);
                 if (event.getButton() == MouseEvent.BUTTON3) {
                     System.out.println("place flag");
-                    cellsList[col][row].toggleFlagged();
+                    cellsList[cellX][cellY].toggleFlagged();
 
 //                    revalidate();
                     repaint();
                 }
                 else {
                     System.out.println("checking for mine");
-                    if (cellsList[col][row].getHasMine()) {
+                    if (cellsList[cellX][cellY].getHasMine()) {
+                        cellsList[cellX][cellY].setMinePresed(true);
+                        repaint();
                         Main.showWinLoseAlert("You have lost.", "Game Over");
+                        //TODO: clean game and start over
                     }
                     else {
-                        checkForAdjMines(cellsList, col, row);
+                        checkForTouchingMines(cellsList, cellY, cellX);
+//                        checkForAdjMines(cellsList, col, row);
                     }
 
 //                    revalidate();

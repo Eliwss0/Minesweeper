@@ -7,12 +7,21 @@ class Cell extends JPanel {
     private boolean hasMine;
     private boolean isFlagged;
     private boolean isChecked;
+    private boolean minePresed;
     private int numOfAdjMines;
 
     Cell() {
         hasMine = false;
         isFlagged = false;
         numOfAdjMines = 0;
+    }
+
+    void setMinePresed(boolean s) {
+        minePresed = s;
+    }
+
+    boolean getMinePressed() {
+        return minePresed;
     }
 
     boolean getHasMine() {
