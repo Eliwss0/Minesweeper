@@ -1,5 +1,7 @@
 # Minesweeper
 
+Minesweeper game made for UH programming assignment Fall 2018. Original assignment below.
+
 Minesweeper is a classical single player puzzle game where the objective is to clear a board containing hidden mines without triggering any of them. The neighboring cells can give you clues on how many adjacent mines are around a particular block.
 A particular board may contain three types of cells and different behaviour when they get exposed:
 1. Mined Cell – exposing this will end the game.
